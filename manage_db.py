@@ -6,8 +6,13 @@ build_path=os.path.dirname(os.path.abspath(__file__))+"\\database\\"
 def make_dataframe() :
 
     df_main=pd.read_csv(build_path+"db_main.csv")
+    
+    df_sub_A_1=pd.read_csv(build_path+"db_sub_A_1.csv")
+    df_sub_A_2=pd.read_csv(build_path+"db_sub_A_2.csv")
+    df_sub_A_concat=pd.concat([df_sub_A_1,df_sub_A_2])
+    df_merge=pd.merge(df_main,df_sub_A_concat,on="sub")
 
-    return df_main
+    return df_merge
 
 app = Flask(__name__)
 
