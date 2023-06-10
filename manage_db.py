@@ -24,7 +24,7 @@ app = Flask(__name__)
 @app.route('/')
 def display_dataframe():
     df=make_dataframe() 
-    return render_template('table.html',table=df.to_html(classes='df_final'))
+    return render_template('table.html',table=df.to_html(classes='df_final'),debug=True)
 
 if __name__ == '__main__' :
     app.run(host='127.0.0.1', port=5000)
