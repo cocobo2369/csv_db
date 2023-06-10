@@ -5,6 +5,9 @@
             db system
         </title>
         <style>
+            #T_df_final th {
+                cursor: pointer;
+            }
             table{
                 border-collapse: collapse;
                 width: 100%;
@@ -19,13 +22,55 @@
                 text-align: left;
                 font-weight: bold;
             }
-            tr:nth-child(odd){
+            #T_df_final tr:nth-child(odd){
                 background-color: rgb(190, 245, 228);
             }
+
         </style>
     </head>
     <body>
         <h1>DB SYSTEM</h1>
-        {{db_table|safe}}
+        {{ db_table|safe }}
     </body>
+
+    <script>
+        function sortTable(colIndex) {
+            var table = document.getElementById('T_df_final');
+            var tbody = table.querySelector('tbody');
+            var rows = Array.from(tbody.getElementsByTagName('tr'));
+
+            rows.sort(function(a, b) {
+                var cellA = a.cells[colIndex].textContent.trim();
+                var cellB = b.cells[colIndex].textContent.trim();
+
+                if (!isNaN(cellA) && !isNaN(cellB)) {
+                return parseFloat(cellA) - parseFloat(cellB);
+                } else {
+                return cellA.localeCompare(cellB);
+                }
+            });
+
+            if (table.classList.contains('asc')) {
+                rows.reverse();
+                table.classList.remove('asc');
+                table.classList.add('desc');
+            } else {
+                table.classList.remove('desc');
+                table.classList.add('asc');
+            }
+
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
+            }
+
+            window.onload = function() {
+            var headers = document.querySelectorAll('#T_df_final th');
+            headers.forEach(function(header, index) {
+                header.addEventListener('click', function() {
+                sortTable(index);
+                });
+            });
+        };
+    </script>
 </html>
