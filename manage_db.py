@@ -44,7 +44,7 @@ app = Flask(__name__)
 def display_dataframe():
     df=make_dataframe()
     df_s=apply_exception(df)
-    return render_template('table.html',table=df_s.to_html(classes='df_final'),debug=True)
+    return render_template('table.html',db_table=df_s.to_html(classes='df_final'),debug=True,escape=False)
 
 if __name__ == '__main__' :
     app.run(host='127.0.0.1', port=5000)
