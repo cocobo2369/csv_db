@@ -1,0 +1,20 @@
+[
+    {
+        "category":"aaa",
+        "reason" : "특별히 변경",
+        "exception":
+        {
+            "sub":"changed-111-1",
+            "sub2-task":"changed-SUB-A-A-1"
+        }
+    },
+    {
+        "category":"bbb",
+        "reason" : "특별히 변경",
+        "exception":
+        {
+            "sub":"changed-222-1",
+            "sub-task":"changed-123-2-sub"
+        }
+    }
+]

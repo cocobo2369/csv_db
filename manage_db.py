@@ -19,12 +19,32 @@ def make_dataframe() :
     df_merge=pd.merge(df_merge,df_sub_B_concat,on="sub2")
     return df_merge
 
+def apply_exception(df: pd.DataFrame) :
+    df_json=pd.read_json(build_path+"db_exception.json")
+
+    def cell_yellow(value):
+        return 'background-color: yellow'
+    
+    df_styled=df.style
+    for index, row in df_json.iterrows() :    
+        condition = row['category'] == df['category']
+        for key,value in row['exception'].items():
+            df.loc[condition,key] = value
+            df_styled=df_styled.applymap(cell_yellow,subset=pd.IndexSlice[df.loc[condition,key].index, ['reason',key]]) # type: ignore
+
+    df_styled.data=pd.merge(df_styled.data,df_json[['category','reason']],how='left') #columns 가 여러개일 때는 list로 넣어줘야함 # type: ignore
+    df_styled.data.fillna('',inplace=True) # type: ignore
+
+    return df_styled
+
+
 app = Flask(__name__)
 
 @app.route('/')
 def display_dataframe():
-    df=make_dataframe() 
-    return render_template('table.html',table=df.to_html(classes='df_final'),debug=True)
+    df=make_dataframe()
+    df_s=apply_exception(df)
+    return render_template('table.html',table=df_s.to_html(classes='df_final'),debug=True)
 
 if __name__ == '__main__' :
     app.run(host='127.0.0.1', port=5000)
